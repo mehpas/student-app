@@ -12,7 +12,7 @@ export class MaterialService {
   //private apiUrl = 'https://cqrs-api-demo-gfcxbaezfxe7bpfd.westeurope-01.azurewebsites.net/api/material';
   private apiUrl = 'https://cqrsdemoapi20250930225359-csekhndrh6edfvhm.westeurope-01.azurewebsites.net/api/material';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }  
 
   getMaterials(hisseKodu?: string): Observable<Material[]> {
     let url = this.apiUrl;
