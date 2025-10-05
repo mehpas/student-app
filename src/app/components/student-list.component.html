@@ -1,0 +1,93 @@
+<div class="container">
+  <div class="header">
+    <h1>Öğrenci Listesi</h1>
+    <div class="search-section">
+      <div class="search-box">
+        <input 
+          type="text" 
+          [(ngModel)]="searchId" 
+          placeholder="Öğrenci ID girin..."
+          class="search-input"
+          (keyup.enter)="onSearch()"
+        >
+        <button (click)="onSearch()" class="search-btn">
+          <i class="search-icon">🔍</i>
+          Ara
+        </button>
+        <button (click)="clearSearch()" class="clear-btn">
+          Temizle
+        </button>
+        <button (click)="refreshData()" class="refresh-btn">
+          <i class="refresh-icon">🔄</i>
+          Yenile
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Otomatik Yenileme Bilgisi -->
+  <div class="refresh-info">
+    <div class="refresh-status">
+      <span class="refresh-label">Son Yenileme:</span>
+      <span class="refresh-time">{{ lastRefreshTime | date:'HH:mm:ss' }}</span>
+    </div>
+    <div class="countdown-section">
+      <span class="countdown-label">Sonraki Yenileme:</span>
+      <span class="countdown-timer" [class.warning]="countdown <= 10">
+        {{ countdown }}s
+      </span>
+    </div>
+  </div>
+
+  <div class="error-message" *ngIf="error">
+    {{ error }}
+  </div>
+
+  <div class="loading" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Öğrenci verileri yükleniyor...</p>
+  </div>
+
+  <div class="table-container" *ngIf="!isLoading">
+    <table class="student-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Öğrenci No</th>
+          <th>Ad</th>
+          <th>Soyad</th>
+          <th>E-posta</th>
+          <th>Doğum Tarihi</th>
+          <th>Kayıt Tarihi</th>
+          <th>Durum</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let student of filteredStudents" class="student-row">
+          <td>{{ student.id }}</td>
+          <td>{{ student.studentNumber }}</td>
+          <td>{{ student.firstName }}</td>
+          <td>{{ student.lastName }}</td>
+          <td>{{ student.email }}</td>
+          <td>{{ student.birthDate | date:'dd.MM.yyyy' }}</td>
+          <td>{{ student.enrollmentDate | date:'dd.MM.yyyy' }}</td>
+          <td>
+            <span [class]="student.isActive ? 'status-active' : 'status-inactive'">
+              {{ student.isActive ? 'Aktif' : 'Pasif' }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="no-data" *ngIf="filteredStudents.length === 0 && !error">
+      <p>Gösterilecek öğrenci bulunamadı.</p>
+    </div>
+  </div>
+
+  <div class="info-section">
+    <p class="total-count">
+      Toplam {{ filteredStudents.length }} öğrenci gösteriliyor
+    </p>
+  </div>
+</div>

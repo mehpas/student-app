@@ -1,0 +1,35 @@
+<div class="app-container">
+  <header class="app-header">
+    <h1>{{ title }}</h1>
+  </header>
+  
+  <nav class="tab-navigation">
+    <button 
+      class="tab-button" 
+      [class.active]="activeTab === 'students'"
+      (click)="setActiveTab('students')"
+    >
+      <i class="tab-icon">👥</i>
+      Öğrenciler
+    </button>
+    <button 
+      class="tab-button" 
+      [class.active]="activeTab === 'materials'"
+      (click)="setActiveTab('materials')"
+    >
+      <i class="tab-icon">📊</i>
+      Materyaller
+    </button>
+  </nav>
+  
+  <main class="app-main">
+    <app-student-list *ngIf="activeTab === 'students'"></app-student-list>
+    <app-material-list *ngIf="activeTab === 'materials'"></app-material-list>
+  </main>
+  
+  <footer class="app-footer">
+    <p>&copy; 2025 Yönetim Sistemi. Tüm hakları saklıdır.</p>
+  </footer>
+</div>
+
+
