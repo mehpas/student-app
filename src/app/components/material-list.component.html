@@ -48,28 +48,74 @@
     <p>Materyal verileri yükleniyor...</p>
   </div>
 
-  <!-- 📊 Tablo Alanı (scroll eklenmiş hali) -->
+  <!-- 📊 Tablo Alanı -->
   <div class="table-container" *ngIf="!isLoading">
     <table class="material-table">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Tarih</th>
-          <th>Hisse Kodu</th>
-          <th>İşlem</th>
-          <th>Adet</th>
-          <th>Fiyat</th>
-          <th>Toplam</th>
-          <th>Komisyon</th>
-          <th>Net Tutar</th>
-          <th>Anlık Fiyat</th>
-          <th>Anlık Tutar</th>
-          <th>Kar/Zarar</th>
-          <th>Kar/Zarar %</th>
-          <th>Ortalama Maliyet</th>
-          <th>Açıklama</th>
+          <th (click)="sortData('id')">
+            ID
+            <span *ngIf="sortColumn === 'id'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+          </th>
+          <th (click)="sortData('tarih')">
+            Tarih
+            <span *ngIf="sortColumn === 'tarih'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+          </th>
+          <th (click)="sortData('hisseKodu')">
+            Hisse Kodu
+            <span *ngIf="sortColumn === 'hisseKodu'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+          </th>
+          <th (click)="sortData('islem')">
+            İşlem
+            <span *ngIf="sortColumn === 'islem'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+          </th>
+          <th (click)="sortData('adet')">
+            Adet
+            <span *ngIf="sortColumn === 'adet'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+          </th>
+          <th (click)="sortData('fiyat')">
+            Fiyat
+            <span *ngIf="sortColumn === 'fiyat'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+          </th>
+          <th (click)="sortData('toplam')">
+            Toplam
+            <span *ngIf="sortColumn === 'toplam'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+          </th>
+          <th (click)="sortData('komisyon')">
+            Komisyon
+            <span *ngIf="sortColumn === 'komisyon'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+          </th>
+          <th (click)="sortData('netTutar')">
+            Net Tutar
+            <span *ngIf="sortColumn === 'netTutar'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+          </th>
+          <th (click)="sortData('anlikFiyat')">
+            Anlık Fiyat
+            <span *ngIf="sortColumn === 'anlikFiyat'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+          </th>
+          <th (click)="sortData('anlikTutar')">
+            Anlık Tutar
+            <span *ngIf="sortColumn === 'anlikTutar'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+          </th>
+          <th (click)="sortData('karZarar')">
+            Kar/Zarar
+            <span *ngIf="sortColumn === 'karZarar'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+          </th>
+          <th (click)="sortData('karZararYuzde')">
+            Kar/Zarar %
+            <span *ngIf="sortColumn === 'karZararYuzde'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+          </th>
+          <th (click)="sortData('ortalamaMaliyet')">
+            Ortalama Maliyet
+            <span *ngIf="sortColumn === 'ortalamaMaliyet'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+          </th>
+          <th (click)="sortData('aciklama')">
+            Açıklama
+            <span *ngIf="sortColumn === 'aciklama'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+          </th>
         </tr>
       </thead>
+
       <tbody>
         <tr *ngFor="let material of filteredMaterials" class="material-row">
           <td>{{ material.id }}</td>
@@ -106,3 +152,4 @@
     </p>
   </div>
 </div>
+

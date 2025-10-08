@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Material } from '../models/material.model';
 import { MaterialService } from '../services/material.service';
 
@@ -7,7 +7,7 @@ import { MaterialService } from '../services/material.service';
   templateUrl: './material-list.component.html',
   styleUrls: ['./material-list.component.css']
 })
-export class MaterialListComponent implements OnInit {
+export class MaterialListComponent implements OnInit, OnDestroy {
   materials: Material[] = [];
   filteredMaterials: Material[] = [];
   isLoading = false;
@@ -17,7 +17,11 @@ export class MaterialListComponent implements OnInit {
   countdown = 30;
   private countdownInterval: any;
 
-  constructor(private materialService: MaterialService) { }
+  // 🔽 Sıralama için eklenen değişkenler
+  sortColumn: string = '';
+  sortDirection: 'asc' | 'desc' = 'asc';
+
+  constructor(private materialService: MaterialService) {}
 
   ngOnInit(): void {
     this.loadMaterials();
@@ -33,7 +37,7 @@ export class MaterialListComponent implements OnInit {
   loadMaterials(): void {
     this.isLoading = true;
     this.error = null;
-    
+
     this.materialService.getMaterials().subscribe({
       next: (data) => {
         this.materials = data;
@@ -52,7 +56,7 @@ export class MaterialListComponent implements OnInit {
     if (this.searchHisseKodu.trim()) {
       this.isLoading = true;
       this.error = null;
-      
+
       this.materialService.getMaterialByCode(this.searchHisseKodu.trim()).subscribe({
         next: (data) => {
           this.filteredMaterials = data;
@@ -86,6 +90,39 @@ export class MaterialListComponent implements OnInit {
       }
     }, 1000);
   }
+
+  // 🔽 Sıralama fonksiyonu eklendi
+  sortData(column: string): void {
+    if (this.sortColumn === column) {
+      // Aynı kolona tıklanırsa yönü değiştir
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
+
+    this.filteredMaterials.sort((a: any, b: any) => {
+      const valueA = a[column];
+      const valueB = b[column];
+
+      // 📅 Tarih kolonu için özel sıralama
+      if (column === 'tarih') {
+        return this.compare(new Date(valueA), new Date(valueB));
+      }
+
+      // 🔢 Sayısal kolonlar
+      if (typeof valueA === 'number' && typeof valueB === 'number') {
+        return this.compare(valueA, valueB);
+      }
+
+      // 🔤 String kolonlar
+      return this.compare(String(valueA), String(valueB));
+    });
+  }
+
+  private compare(a: any, b: any): number {
+    if (a < b) return this.sortDirection === 'asc' ? -1 : 1;
+    if (a > b) return this.sortDirection === 'asc' ? 1 : -1;
+    return 0;
+  }
 }
-
-
