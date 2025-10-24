@@ -7,9 +7,9 @@ import { Material } from '../models/material.model';
   providedIn: 'root'
 })
 export class MaterialService {
-  private apiUrl = 'https://localhost:5001/api/material';
+ // private apiUrl = 'https://localhost:5001/api/material';
   
- // private apiUrl = 'https://cqrsdemoapi20250930225359-csekhndrh6edfvhm.westeurope-01.azurewebsites.net/api/material';
+ private apiUrl = 'https://cqrsdemoapi20250930225359-csekhndrh6edfvhm.westeurope-01.azurewebsites.net/api/material';
 
   constructor(private http: HttpClient) { }  
 

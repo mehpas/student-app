@@ -8,7 +8,8 @@ import { Student } from '../models/student.model';
   providedIn: 'root'
 })
 export class StudentService {
-  private apiUrl = 'https://localhost:5001/api/student';
+ // private apiUrl = 'https://localhost:5001/api/student';
+  private apiUrl = 'https://cqrsdemoapi20250930225359-csekhndrh6edfvhm.westeurope-01.azurewebsites.net/api/student';
 
   private httpOptions = {
     headers: new HttpHeaders({
