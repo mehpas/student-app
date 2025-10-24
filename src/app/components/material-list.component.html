@@ -21,6 +21,10 @@
           <i class="refresh-icon">🔄</i>
           Yenile
         </button>
+        <button (click)="addNewMaterial()" class="add-btn">
+          <i class="add-icon">➕</i>
+          Yeni Kayıt
+        </button>
       </div>
     </div>
   </div>
@@ -52,67 +56,243 @@
   <div class="table-container" *ngIf="!isLoading">
     <table class="material-table">
       <thead>
+        <!-- Filtre satırı -->
+        <tr class="filter-row">
+          <th>
+            <input 
+              type="text" 
+              [(ngModel)]="filters.id" 
+              (input)="applyFilters()"
+              placeholder="ID filtrele..."
+              class="filter-input"
+            >
+          </th>
+          <th>
+            <input 
+              type="text" 
+              [(ngModel)]="filters.tarih" 
+              (input)="applyFilters()"
+              placeholder="Tarih filtrele..."
+              class="filter-input"
+            >
+          </th>
+          <th>
+            <input 
+              type="text" 
+              [(ngModel)]="filters.hisseKodu" 
+              (input)="applyFilters()"
+              placeholder="Hisse kodu filtrele..."
+              class="filter-input"
+            >
+          </th>
+          <th>
+            <input 
+              type="text" 
+              [(ngModel)]="filters.islem" 
+              (input)="applyFilters()"
+              placeholder="İşlem filtrele..."
+              class="filter-input"
+            >
+          </th>
+          <th>
+            <input 
+              type="text" 
+              [(ngModel)]="filters.adet" 
+              (input)="applyFilters()"
+              placeholder="Adet filtrele..."
+              class="filter-input"
+            >
+          </th>
+          <th>
+            <input 
+              type="text" 
+              [(ngModel)]="filters.fiyat" 
+              (input)="applyFilters()"
+              placeholder="Fiyat filtrele..."
+              class="filter-input"
+            >
+          </th>
+          <th>
+            <input 
+              type="text" 
+              [(ngModel)]="filters.toplam" 
+              (input)="applyFilters()"
+              placeholder="Toplam filtrele..."
+              class="filter-input"
+            >
+          </th>
+          <th>
+            <input 
+              type="text" 
+              [(ngModel)]="filters.komisyon" 
+              (input)="applyFilters()"
+              placeholder="Komisyon filtrele..."
+              class="filter-input"
+            >
+          </th>
+          <th>
+            <input 
+              type="text" 
+              [(ngModel)]="filters.netTutar" 
+              (input)="applyFilters()"
+              placeholder="Net tutar filtrele..."
+              class="filter-input"
+            >
+          </th>
+          <th>
+            <input 
+              type="text" 
+              [(ngModel)]="filters.anlikFiyat" 
+              (input)="applyFilters()"
+              placeholder="Anlık fiyat filtrele..."
+              class="filter-input"
+            >
+          </th>
+          <th>
+            <input 
+              type="text" 
+              [(ngModel)]="filters.anlikTutar" 
+              (input)="applyFilters()"
+              placeholder="Anlık tutar filtrele..."
+              class="filter-input"
+            >
+          </th>
+          <th>
+            <input 
+              type="text" 
+              [(ngModel)]="filters.karZarar" 
+              (input)="applyFilters()"
+              placeholder="Kar/zarar filtrele..."
+              class="filter-input"
+            >
+          </th>
+          <th>
+            <input 
+              type="text" 
+              [(ngModel)]="filters.karZararYuzde" 
+              (input)="applyFilters()"
+              placeholder="Kar/zarar % filtrele..."
+              class="filter-input"
+            >
+          </th>
+          <th>
+            <input 
+              type="text" 
+              [(ngModel)]="filters.ortalamaMaliyet" 
+              (input)="applyFilters()"
+              placeholder="Ortalama maliyet filtrele..."
+              class="filter-input"
+            >
+          </th>
+          <th>
+            <input 
+              type="text" 
+              [(ngModel)]="filters.aciklama" 
+              (input)="applyFilters()"
+              placeholder="Açıklama filtrele..."
+              class="filter-input"
+            >
+          </th>
+          <th>
+            <button (click)="clearAllFilters()" class="clear-filters-btn">
+              🗑️ Temizle
+            </button>
+          </th>
+        </tr>
+        
+        <!-- Header satırı -->
         <tr>
-          <th (click)="sortData('id')">
+          <th (click)="sortData('id')" title="ID'ye göre sırala">
             ID
-            <span *ngIf="sortColumn === 'id'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+            <span *ngIf="sortColumn === 'id'" class="sort-indicator">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
           </th>
-          <th (click)="sortData('tarih')">
+          <th (click)="sortData('tarih')" title="Tarihe göre sırala">
             Tarih
-            <span *ngIf="sortColumn === 'tarih'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+            <span *ngIf="sortColumn === 'tarih'" class="sort-indicator">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
           </th>
-          <th (click)="sortData('hisseKodu')">
+          <th (click)="sortData('hisseKodu')" title="Hisse koduna göre sırala">
             Hisse Kodu
-            <span *ngIf="sortColumn === 'hisseKodu'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+            <span *ngIf="sortColumn === 'hisseKodu'" class="sort-indicator">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
           </th>
-          <th (click)="sortData('islem')">
+          <th (click)="sortData('islem')" title="İşleme göre sırala">
             İşlem
-            <span *ngIf="sortColumn === 'islem'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+            <span *ngIf="sortColumn === 'islem'" class="sort-indicator">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
           </th>
-          <th (click)="sortData('adet')">
+          <th (click)="sortData('adet')" title="Adete göre sırala">
             Adet
-            <span *ngIf="sortColumn === 'adet'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+            <span *ngIf="sortColumn === 'adet'" class="sort-indicator">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
           </th>
-          <th (click)="sortData('fiyat')">
+          <th (click)="sortData('fiyat')" title="Fiyata göre sırala">
             Fiyat
-            <span *ngIf="sortColumn === 'fiyat'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+            <span *ngIf="sortColumn === 'fiyat'" class="sort-indicator">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
           </th>
-          <th (click)="sortData('toplam')">
+          <th (click)="sortData('toplam')" title="Toplama göre sırala">
             Toplam
-            <span *ngIf="sortColumn === 'toplam'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+            <span *ngIf="sortColumn === 'toplam'" class="sort-indicator">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
           </th>
-          <th (click)="sortData('komisyon')">
+          <th (click)="sortData('komisyon')" title="Komisyona göre sırala">
             Komisyon
-            <span *ngIf="sortColumn === 'komisyon'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+            <span *ngIf="sortColumn === 'komisyon'" class="sort-indicator">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
           </th>
-          <th (click)="sortData('netTutar')">
+          <th (click)="sortData('netTutar')" title="Net tutara göre sırala">
             Net Tutar
-            <span *ngIf="sortColumn === 'netTutar'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+            <span *ngIf="sortColumn === 'netTutar'" class="sort-indicator">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
           </th>
-          <th (click)="sortData('anlikFiyat')">
+          <th (click)="sortData('anlikFiyat')" title="Anlık fiyata göre sırala">
             Anlık Fiyat
-            <span *ngIf="sortColumn === 'anlikFiyat'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+            <span *ngIf="sortColumn === 'anlikFiyat'" class="sort-indicator">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
           </th>
-          <th (click)="sortData('anlikTutar')">
+          <th (click)="sortData('anlikTutar')" title="Anlık tutara göre sırala">
             Anlık Tutar
-            <span *ngIf="sortColumn === 'anlikTutar'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+            <span *ngIf="sortColumn === 'anlikTutar'" class="sort-indicator">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
           </th>
-          <th (click)="sortData('karZarar')">
+          <th (click)="sortData('karZarar')" title="Kar/zarara göre sırala">
             Kar/Zarar
-            <span *ngIf="sortColumn === 'karZarar'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+            <span *ngIf="sortColumn === 'karZarar'" class="sort-indicator">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
           </th>
-          <th (click)="sortData('karZararYuzde')">
+          <th (click)="sortData('karZararYuzde')" title="Kar/zarar yüzdesine göre sırala">
             Kar/Zarar %
-            <span *ngIf="sortColumn === 'karZararYuzde'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+            <span *ngIf="sortColumn === 'karZararYuzde'" class="sort-indicator">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
           </th>
-          <th (click)="sortData('ortalamaMaliyet')">
+          <th (click)="sortData('ortalamaMaliyet')" title="Ortalama maliyete göre sırala">
             Ortalama Maliyet
-            <span *ngIf="sortColumn === 'ortalamaMaliyet'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+            <span *ngIf="sortColumn === 'ortalamaMaliyet'" class="sort-indicator">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
           </th>
-          <th (click)="sortData('aciklama')">
+          <th (click)="sortData('aciklama')" title="Açıklamaya göre sırala">
             Açıklama
-            <span *ngIf="sortColumn === 'aciklama'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+            <span *ngIf="sortColumn === 'aciklama'" class="sort-indicator">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
           </th>
+          <th>İşlemler</th>
         </tr>
       </thead>
 
@@ -123,22 +303,64 @@
           <td>{{ material.hisseKodu }}</td>
           <td>{{ material.islem }}</td>
           <td>{{ material.adet | number:'1.2-2' }}</td>
-          <td>{{ material.fiyat | currency:'TRY':'symbol':'1.2-2' }}</td>
-          <td>{{ material.toplam | currency:'TRY':'symbol':'1.2-2' }}</td>
-          <td>{{ material.komisyon | currency:'TRY':'symbol':'1.2-2' }}</td>
-          <td>{{ material.netTutar | currency:'TRY':'symbol':'1.2-2' }}</td>
-          <td>{{ material.anlikFiyat | currency:'TRY':'symbol':'1.2-2' }}</td>
-          <td>{{ material.anlikTutar | currency:'TRY':'symbol':'1.2-2' }}</td>
+          <td>{{ material.fiyat | number:'1.2-2' }}</td>
+          <td>{{ material.toplam | number:'1.2-2' }}</td>
+          <td>{{ material.komisyon | number:'1.2-2' }}</td>
+          <td>{{ material.netTutar | number:'1.2-2' }}</td>
+          <td>{{ material.anlikFiyat | number:'1.2-2' }}</td>
+          <td>{{ material.anlikTutar | number:'1.2-2' }}</td>
           <td [class]="material.karZarar >= 0 ? 'profit' : 'loss'">
-            {{ material.karZarar | currency:'TRY':'symbol':'1.2-2' }}
+            {{ material.karZarar | number:'1.2-2' }}
           </td>
           <td [class]="material.karZararYuzde >= 0 ? 'profit' : 'loss'">
             {{ material.karZararYuzde | number:'1.2-2' }}%
           </td>
-          <td>{{ material.ortalamaMaliyet | currency:'TRY':'symbol':'1.2-2' }}</td>
+          <td>{{ material.ortalamaMaliyet | number:'1.2-2' }}</td>
           <td>{{ material.aciklama }}</td>
+          <td>
+            <button 
+              (click)="updateMaterial(material)" 
+              class="update-btn"
+              title="Güncelle"
+            >
+              ✏️
+            </button>
+            <button 
+              (click)="deleteMaterial(material)" 
+              class="delete-btn"
+              title="Sil"
+            >
+              🗑️
+            </button>
+          </td>
         </tr>
       </tbody>
+      
+      <!-- Toplam satırı -->
+      <tfoot>
+        <tr class="total-row">
+          <td class="total-label">TOPLAM</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td class="total-value">{{ getTotalAdet() | number:'1.2-2' }}</td>
+          <td>-</td>
+          <td class="total-value">{{ getTotalToplam() | number:'1.2-2' }}</td>
+          <td class="total-value">{{ getTotalKomisyon() | number:'1.2-2' }}</td>
+          <td class="total-value">{{ getTotalNetTutar() | number:'1.2-2' }}</td>
+          <td>-</td>
+          <td class="total-value">{{ getTotalAnlikTutar() | number:'1.2-2' }}</td>
+          <td class="total-value" [class]="getTotalKarZarar() >= 0 ? 'profit' : 'loss'">
+            {{ getTotalKarZarar() | number:'1.2-2' }}
+          </td>
+          <td class="total-value" [class]="getWeightedKarZararYuzde() >= 0 ? 'profit' : 'loss'">
+            {{ getWeightedKarZararYuzde() | number:'1.2-2' }}%
+          </td>
+          <td class="total-value">{{ getWeightedOrtalamaMaliyet() | number:'1.2-2' }}</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+      </tfoot>
     </table>
 
     <div class="no-data" *ngIf="filteredMaterials.length === 0 && !error">

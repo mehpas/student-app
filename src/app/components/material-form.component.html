@@ -1,0 +1,202 @@
+<div class="form-container">
+  <div class="form-header">
+    <h2>{{ isEditMode ? 'Materyal Güncelle' : 'Yeni Materyal Ekle' }}</h2>
+    <div class="form-actions">
+      <button (click)="onSave()" class="save-btn">
+        💾 {{ isEditMode ? 'Güncelle' : 'Kaydet' }}
+      </button>
+      <button (click)="onCancel()" class="cancel-btn">
+        ❌ İptal
+      </button>
+    </div>
+  </div>
+
+  <div class="form-content">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="tarih">Tarih *</label>
+        <input 
+          type="date" 
+          id="tarih" 
+          [(ngModel)]="formData.tarih" 
+          class="form-input"
+          required
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="hisseKodu">Hisse Kodu *</label>
+        <input 
+          type="text" 
+          id="hisseKodu" 
+          [(ngModel)]="formData.hisseKodu" 
+          class="form-input"
+          placeholder="Örn: THYAO"
+          required
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="islem">İşlem *</label>
+        <select 
+          id="islem" 
+          [(ngModel)]="formData.islem" 
+          class="form-input"
+          required
+        >
+          <option value="">İşlem Seçin</option>
+          <option value="ALIŞ">ALIŞ</option>
+          <option value="SATIŞ">SATIŞ</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="adet">Adet *</label>
+        <input 
+          type="number" 
+          id="adet" 
+          [(ngModel)]="formData.adet" 
+          class="form-input"
+          step="0.01"
+          min="0"
+          required
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="fiyat">Fiyat *</label>
+        <input 
+          type="number" 
+          id="fiyat" 
+          [(ngModel)]="formData.fiyat" 
+          class="form-input"
+          step="0.01"
+          min="0"
+          required
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="anlikFiyat">Anlık Fiyat</label>
+        <input 
+          type="number" 
+          id="anlikFiyat" 
+          [(ngModel)]="formData.anlikFiyat" 
+          class="form-input"
+          step="0.01"
+          min="0"
+        >
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="komisyon">Komisyon</label>
+        <input 
+          type="number" 
+          id="komisyon" 
+          [(ngModel)]="formData.komisyon" 
+          class="form-input"
+          step="0.01"
+          min="0"
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="ortalamaMaliyet">Ortalama Maliyet</label>
+        <input 
+          type="number" 
+          id="ortalamaMaliyet" 
+          [(ngModel)]="formData.ortalamaMaliyet" 
+          class="form-input"
+          step="0.01"
+          min="0"
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="aciklama">Açıklama</label>
+        <input 
+          type="text" 
+          id="aciklama" 
+          [(ngModel)]="formData.aciklama" 
+          class="form-input"
+          placeholder="Opsiyonel açıklama"
+        >
+      </div>
+    </div>
+
+    <!-- Hesaplanan Alanlar (Read-only) -->
+    <div class="calculated-fields">
+      <h3>Hesaplanan Alanlar</h3>
+      <div class="form-row">
+        <div class="form-group readonly">
+          <label>Toplam</label>
+          <input 
+            type="number" 
+            [value]="formData.toplam | number:'1.2-2'" 
+            class="form-input readonly"
+            readonly
+          >
+        </div>
+        
+        <div class="form-group readonly">
+          <label>Net Tutar</label>
+          <input 
+            type="number" 
+            [value]="formData.netTutar | number:'1.2-2'" 
+            class="form-input readonly"
+            readonly
+          >
+        </div>
+        
+        <div class="form-group readonly">
+          <label>Anlık Tutar</label>
+          <input 
+            type="number" 
+            [value]="formData.anlikTutar | number:'1.2-2'" 
+            class="form-input readonly"
+            readonly
+          >
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group readonly">
+          <label>Kar/Zarar</label>
+          <input 
+            type="number" 
+            [value]="formData.karZarar | number:'1.2-2'" 
+            class="form-input readonly"
+            [class]="formData.karZarar >= 0 ? 'profit' : 'loss'"
+            readonly
+          >
+        </div>
+        
+        <div class="form-group readonly">
+          <label>Kar/Zarar %</label>
+          <input 
+            type="number" 
+            [value]="formData.karZararYuzde | number:'1.2-2'" 
+            class="form-input readonly"
+            [class]="formData.karZararYuzde >= 0 ? 'profit' : 'loss'"
+            readonly
+          >
+        </div>
+        
+        <div class="form-group readonly">
+          <label>API Link</label>
+          <input 
+            type="text" 
+            [value]="isEditMode ? getUpdateLink() : getCreateLink()" 
+            class="form-input readonly api-link"
+            readonly
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
